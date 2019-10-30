@@ -79,6 +79,9 @@ double ss_norm2(Field const& x, const int N)
 void ss_fill(Field& x, const double value, const int N)
 {
     //TODO - DONE
+    for(int i=0;i<N;i++){
+        x[i] = value;
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -91,6 +94,8 @@ void ss_fill(Field& x, const double value, const int N)
 void ss_axpy(Field& y, const double alpha, Field const& x, const int N)
 {
     //TODO
+    for(int i=0;i<N;i++)
+        y[i] += alpha*x[i];
 }
 
 // computes y = x + alpha*(l-r)
@@ -99,7 +104,8 @@ void ss_axpy(Field& y, const double alpha, Field const& x, const int N)
 void ss_add_scaled_diff(Field& y, Field const& x, const double alpha,
     Field const& l, Field const& r, const int N)
 {
-    //TODO
+    for(int i=0;i<N;i++)
+        y[i] = x[i] + alpha*(l[i] - r[i]);
 }
 
 // computes y = alpha*(l-r)
@@ -108,7 +114,9 @@ void ss_add_scaled_diff(Field& y, Field const& x, const double alpha,
 void ss_scaled_diff(Field& y, const double alpha,
     Field const& l, Field const& r, const int N)
 {
-    //TODO
+    for(int i=0;i<N;i++){
+        y[i] = alpha*(l[i]-r[i]);
+    }
 }
 
 // computes y := alpha*x
@@ -116,7 +124,9 @@ void ss_scaled_diff(Field& y, const double alpha,
 // y and x are vectors on length n
 void ss_scale(Field& y, const double alpha, Field& x, const int N)
 {
-    //TODO
+    //TODO - DONE
+    for(int i=0;i<N;i++)
+        y[i] = alpha*x[i];
 }
 
 // computes linear combination of two vectors y := alpha*x + beta*z
@@ -125,14 +135,19 @@ void ss_scale(Field& y, const double alpha, Field& x, const int N)
 void ss_lcomb(Field& y, const double alpha, Field& x, const double beta,
     Field const& z, const int N)
 {
-    //TODO
+    //TODO - DONE
+    for(int i=0;i<N;i++)
+        y[i] = alpha*x[i] + beta*z[i];
 }
 
 // copy one vector into another y := x
 // x and y are vectors of length N
 void ss_copy(Field& y, Field const& x, const int N)
 {
-    //TODO
+    //TODO 
+    for(int i=0;i<N;i++){
+        y[i] = x[i];
+    }
 }
 
 // conjugate gradient solver

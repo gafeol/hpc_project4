@@ -46,17 +46,29 @@ void diffusion(const data::Field &U, data::Field &S)
         int i = nx - 1;
         for (int j = 1; j < jend; j++)
         {
-            S(i,j) = -(4. + alpha) * U(i,j)
+            S(i,j) = -(4. + alpha) * U(i,j)               // central point
+                                    + U(i-1,j) + bndE[j] // east and west
+                                    + U(i,j-1) + U(i,j+1) // north and south
+                                    + alpha * x_old(i,j)
+                                    + dxs * U(i,j) * (1.0 - U(i,j));
+            /*S(i,j) = -(4. + alpha) * U(i,j)
                         + U(i-1,j) + U(i,j-1) + U(i,j+1)
                         + alpha*x_old(i,j) + bndE[j]
-                        + dxs * U(i,j) * (1.0 - U(i,j));
+                        + dxs * U(i,j) * (1.0 - U(i,j));*/
         }
     }
 
     // the west boundary
     {
         int i = 0;
-        //TODO
+        for(int j=1;j < jend;j++)
+        {
+            S(i,j) = -(4. + alpha) * U(i,j)               // central point
+                                    + bndW[j] + U(i+1,j) // east and west
+                                    + U(i,j-1) + U(i,j+1) // north and south
+                                    + alpha * x_old(i,j)
+                                    + dxs * U(i,j) * (1.0 - U(i,j));
+        }
     }
 
     // the north boundary (plus NE and NW corners)
@@ -73,6 +85,15 @@ void diffusion(const data::Field &U, data::Field &S)
 
         // north boundary
         //TODO
+        {
+            for (int i = 1; i < iend; i++)
+            {
+                S(i, j) = -(4. + alpha) * U(i, j)     // central point
+                          + U(i - 1, j) + U(i + 1, j) // east and west
+                          + U(i, j - 1) + bndN[i] // north and south
+                          + alpha * x_old(i, j) + dxs * U(i, j) * (1.0 - U(i, j));
+            }
+        }
 
         {
             int i = nx-1; // NE corner
@@ -97,6 +118,15 @@ void diffusion(const data::Field &U, data::Field &S)
 
         // south boundary
         //TODO
+        {
+            for (int i = 1; i < iend; i++)
+            {
+                S(i, j) = -(4. + alpha) * U(i, j)     // central point
+                          + U(i - 1, j) + U(i + 1, j) // east and west
+                          + bndS[i] + U(i, j + 1) // north and south
+                          + alpha * x_old(i, j) + dxs * U(i, j) * (1.0 - U(i, j));
+            }
+        }
 
         {
             int i = nx - 1; // SE corner
